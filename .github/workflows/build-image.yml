@@ -37,3 +37,16 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - uses: addnab/docker-run-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          registry: ${{ env.REGISTRY }}
+          image: ${{ env.IMAGE_NAME }}
+          run: |
+            apt update
+            apt install pcregrep
+            /usr/local/bin/check_for_update.pl | pcregrep -o1 "Version: (\d+\.\d+)" > version
+            cat version
+            echo "action_state=yellow" >> $GITHUB_ENV
