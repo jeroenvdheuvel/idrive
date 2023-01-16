@@ -1,0 +1,17 @@
+# action.yml
+name: 'Get version'
+description: 'Get the idrive version'
+inputs:
+  image:
+    description: 'Name of the container image'
+    required: true
+outputs:
+  version:
+    description: 'Installed version of idrive'
+runs:
+  using: 'docker'
+  image: 'docker://debian:stretch-slim'
+  #  image: 'docker://${{ inputs.image }}'
+  args:
+    - echo "version=123.456" >> $GITHUB_OUTPUT
+#    - /usr/local/bin/check_for_update.pl | pcregrep -o1 "Version: (\d+\.\d+)" | awk '{print "version="$1}' >> $GITHUB_OUTPUT
